@@ -846,6 +846,160 @@ footer { background: var(--black); }
 }
 .back-top.show { opacity: 1; pointer-events: all; }
 .back-top:hover { transform: translateY(-3px); }
+
+/* ── Hamburger menu ── */
+.nav-hamburger {
+  display: none;
+  flex-direction: column; justify-content: center; align-items: center;
+  width: 40px; height: 40px;
+  background: none; border: none; cursor: pointer;
+  gap: 5px; padding: 4px;
+  margin-left: 8px;
+}
+.nav-hamburger span {
+  display: block; width: 22px; height: 2px;
+  background: var(--white);
+  border-radius: 2px;
+  transition: all .25s ease;
+}
+.navbar.scrolled .nav-hamburger span { background: var(--gray-700); }
+.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile nav drawer */
+.nav-mobile-drawer {
+  display: none;
+  position: fixed; top: 68px; left: 0; right: 0;
+  background: rgba(255,255,255,.98);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--gray-100);
+  padding: 16px 20px 24px;
+  z-index: 499;
+  flex-direction: column; gap: 4px;
+  box-shadow: 0 8px 32px rgba(17,23,20,.10);
+}
+.nav-mobile-drawer.open { display: flex; }
+.nav-mobile-drawer a {
+  font-size: 15px; font-weight: 500;
+  padding: 13px 16px;
+  border-radius: var(--rad-sm);
+  color: var(--gray-700);
+  transition: all .15s;
+}
+.nav-mobile-drawer a:hover { color: var(--green-main); background: var(--green-wash); }
+.nav-mobile-drawer .btn-nav-mobile {
+  margin-top: 8px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 13px 20px;
+  border-radius: var(--rad-sm);
+  font-family: var(--font-head);
+  font-size: 14px; font-weight: 700;
+  background: var(--green-main); color: var(--white);
+  border: none; cursor: pointer;
+  transition: all .2s;
+}
+.nav-mobile-drawer .btn-nav-mobile:hover { background: var(--green-deep); }
+
+/* ═══════════════════════════════════
+   RESPONSIVE — MOBILE
+═══════════════════════════════════ */
+@media (max-width: 900px) {
+  /* Navbar */
+  .nav-links { display: none; }
+  .btn-nav { display: none; }
+  .nav-hamburger { display: flex; }
+
+  /* Hero */
+  .hero-inner {
+    grid-template-columns: 1fr;
+    padding: 100px 0 60px;
+    gap: 40px;
+  }
+  .hero-left { padding-right: 0; }
+  .hero h1 { font-size: clamp(32px, 7vw, 50px); letter-spacing: -1.5px; }
+  .hero-desc { font-size: 15px; max-width: 100%; }
+  .hero-ctas { gap: 12px; }
+  .btn-primary, .btn-outline-white { padding: 13px 22px; font-size: 13px; }
+
+  /* Hero right cards */
+  .hero-right {
+    height: auto;
+    position: relative;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .hcard { position: static !important; animation: none !important; }
+  .hcard-stat { min-width: unset; }
+  .hcard-badge2 { min-width: unset; }
+
+  /* About */
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .about-img-main { height: 260px; }
+  .about-deco { bottom: -16px; right: 0; }
+
+  /* Layanan */
+  .layanan-grid { grid-template-columns: 1fr; gap: 16px; }
+
+  /* Proses */
+  .proses-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  .proses-grid::before { display: none; }
+
+  /* Portfolio */
+  .porto-grid { grid-template-columns: 1fr; gap: 16px; }
+
+  /* Why */
+  .why-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .why-right-visual { height: 320px; }
+
+  /* Kontak */
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  /* Footer */
+  .footer-top {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 48px 0 36px;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  /* Section padding */
+  .sec { padding: 64px 0; }
+  .wrap { padding: 0 20px; }
+
+  /* Contact CTA buttons */
+  .contact-cta-btns { flex-direction: column; }
+  .contact-cta-btns a { text-align: center; justify-content: center; }
+}
+
+@media (max-width: 480px) {
+  .hero h1 { font-size: 30px; letter-spacing: -1px; }
+  .hero-ctas { flex-direction: column; }
+  .btn-primary, .btn-outline-white { width: 100%; justify-content: center; }
+  .about-values { grid-template-columns: 1fr; }
+  .f2col { grid-template-columns: 1fr; }
+  .proses-grid { grid-template-columns: 1fr; }
+  .wbc-stats { grid-template-columns: 1fr 1fr; }
+  .why-right-visual { height: 280px; }
+  .contact-form { padding: 28px 20px; }
+  .contact-form::before { margin: -28px -20px 24px; }
+  .sec-title { font-size: 24px; }
+}
 </style>
 </head>
 <body>
@@ -870,9 +1024,24 @@ footer { background: var(--black); }
         Mulai Project
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6h7M6.5 3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
+      <button class="nav-hamburger" id="navHamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </div>
 </nav>
+
+<!-- Mobile nav drawer -->
+<div class="nav-mobile-drawer" id="navDrawer">
+  <a href="#tentang" class="nav-drawer-link">Tentang</a>
+  <a href="#layanan" class="nav-drawer-link">Layanan</a>
+  <a href="#portfolio" class="nav-drawer-link">Portfolio</a>
+  <a href="#kontak" class="nav-drawer-link">Kontak</a>
+  <button class="btn-nav-mobile" onclick="document.getElementById('kontak').scrollIntoView({behavior:'smooth'});document.getElementById('navDrawer').classList.remove('open');document.getElementById('navHamburger').classList.remove('open');">
+    Mulai Project
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6h7M6.5 3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+</div>
 
 <!-- ═══ HERO ═══ -->
 <section class="hero" id="hero">
@@ -1185,63 +1354,43 @@ footer { background: var(--black); }
 <!-- ═══ KONTAK ═══ -->
 <section class="contact-sec sec" id="kontak">
   <div class="wrap">
-    <div class="sec-head" style="margin-bottom:52px">
+    <div class="sec-head centered" style="margin-bottom:48px">
       <div class="sec-tag reveal">Hubungi Kami</div>
       <h2 class="sec-title reveal delay-1">Siap Mulai Project Kamu?</h2>
-      <p class="sec-sub reveal delay-2">Konsultasi pertama gratis — ceritakan kebutuhan kamu dan kami akan siapkan solusinya.</p>
+      <p class="sec-sub reveal delay-2" style="margin:0 auto;">Konsultasi pertama gratis — ceritakan kebutuhan kamu dan kami akan siapkan solusinya dalam waktu kurang dari 24 jam.</p>
     </div>
-    <div class="contact-grid">
-      <div class="contact-left reveal-left">
-        <p style="font-size:15px;color:var(--gray-500);line-height:1.72;">
-          Punya ide project? Atau bingung harus mulai dari mana? Hubungi kami lewat form atau kontak di bawah ini.
-          Kami biasanya merespons dalam waktu kurang dari 24 jam.
-        </p>
-        <div class="contact-info-list">
-          <div class="ci-row">
-            <div class="ci-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-            <div><div class="ci-label">Email</div><div class="ci-val">hello@shelteriadev.com</div></div>
-          </div>
-          <div class="ci-row">
-            <div class="ci-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="8" cy="8" r="6.5"/><path d="M5 8c0-1.7 1.3-3 3-3s3 1.3 3 3-1.3 3-3 3c-.6 0-1.1-.2-1.6-.4L4.5 11l.5-1.9C4.7 8.7 5 8.4 5 8z" stroke-width="1.3"/></svg></div>
-            <div><div class="ci-label">WhatsApp</div><div class="ci-val">+62 812-XXXX-XXXX</div></div>
-          </div>
-          <div class="ci-row">
-            <div class="ci-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg></div>
-            <div><div class="ci-label">Instagram</div><div class="ci-val">@shelteriadev</div></div>
-          </div>
-          <div class="ci-row">
-            <div class="ci-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-            <div><div class="ci-label">Jam Respons</div><div class="ci-val">Senin – Sabtu, 08.00 – 21.00 WIB</div></div>
-          </div>
-        </div>
+
+    <!-- CTA Buttons -->
+    <div class="reveal" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:52px;">
+      <a href="https://wa.me/6281200000000?text=Halo%20ShelteriaDev%2C%20saya%20mau%20konsultasi%20project" target="_blank"
+        style="display:inline-flex;align-items:center;gap:10px;padding:15px 32px;border-radius:var(--rad-sm);font-family:var(--font-head);font-size:14px;font-weight:700;background:var(--green-main);color:var(--white);text-decoration:none;box-shadow:0 4px 20px rgba(45,140,69,.35);transition:all .2s;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        Chat via WhatsApp
+      </a>
+      <a href="mailto:hello@shelteriadev.com"
+        style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border-radius:var(--rad-sm);font-family:var(--font-head);font-size:14px;font-weight:600;background:transparent;color:var(--gray-700);border:1.5px solid var(--gray-100);text-decoration:none;transition:all .2s;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Kirim Email
+      </a>
+    </div>
+
+    <!-- Contact Info Cards -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;max-width:860px;margin:0 auto;">
+      <div class="ci-row reveal delay-1">
+        <div class="ci-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+        <div><div class="ci-label">Email</div><div class="ci-val">hello@shelteriadev.com</div></div>
       </div>
-      <div class="reveal-right">
-        <div class="contact-form">
-          <div class="form-title">Ceritakan Project Kamu</div>
-          <p class="form-sub">Isi form di bawah, kami akan hubungi kamu sesegera mungkin.</p>
-          <div class="f2col">
-            <div class="fgroup"><label>Nama</label><input type="text" placeholder="Nama kamu"></div>
-            <div class="fgroup"><label>Email</label><input type="email" placeholder="email@kamu.com"></div>
-          </div>
-          <div class="fgroup"><label>Jenis Layanan</label>
-            <select>
-              <option value="">— Pilih layanan —</option>
-              <option>Website & Company Profile</option>
-              <option>E-Commerce & Toko Online</option>
-              <option>Landing Page</option>
-              <option>Dashboard & Admin Panel</option>
-              <option>Optimasi SEO & Performa</option>
-              <option>Maintenance & Support</option>
-              <option>Konsultasi</option>
-            </select>
-          </div>
-          <div class="fgroup"><label>Ceritakan Project Kamu</label><textarea placeholder="Jelaskan kebutuhan, target, atau pertanyaan kamu..."></textarea></div>
-          <button class="btn-submit" type="button">
-            Kirim Pesan
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-          <p class="form-note">Konsultasi pertama gratis. Tanpa komitmen.</p>
-        </div>
+      <div class="ci-row reveal delay-2">
+        <div class="ci-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg></div>
+        <div><div class="ci-label">WhatsApp</div><div class="ci-val">+62 812-XXXX-XXXX</div></div>
+      </div>
+      <div class="ci-row reveal delay-3">
+        <div class="ci-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg></div>
+        <div><div class="ci-label">Instagram</div><div class="ci-val">@shelteriadev</div></div>
+      </div>
+      <div class="ci-row reveal delay-4">
+        <div class="ci-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div><div class="ci-label">Jam Respons</div><div class="ci-val">Senin – Sabtu, 08.00 – 21.00 WIB</div></div>
       </div>
     </div>
   </div>
@@ -1304,15 +1453,31 @@ window.addEventListener("scroll", () => {
   backTop.classList.toggle("show", y > 400);
 });
 
+// Hamburger menu
+const hamburger = document.getElementById("navHamburger");
+const drawer = document.getElementById("navDrawer");
+hamburger.addEventListener("click", () => {
+  hamburger.classList.toggle("open");
+  drawer.classList.toggle("open");
+});
+
+// Close drawer when clicking links
+document.querySelectorAll(".nav-drawer-link").forEach(a => {
+  a.addEventListener("click", () => {
+    hamburger.classList.remove("open");
+    drawer.classList.remove("open");
+  });
+});
+
 // Scroll reveal
 const revealEls = document.querySelectorAll(".reveal, .reveal-left, .reveal-right");
 const io = new IntersectionObserver((entries) => {
   entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); io.unobserve(e.target); } });
-}, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+}, { threshold: 0.10, rootMargin: "0px 0px -30px 0px" });
 revealEls.forEach(el => io.observe(el));
 
 // Smooth scroll for nav links
-document.querySelectorAll("a[href^=\'#\']").forEach(a => {
+document.querySelectorAll("a[href^='#']").forEach(a => {
   a.addEventListener("click", e => {
     const t = document.querySelector(a.getAttribute("href"));
     if (t) { e.preventDefault(); t.scrollIntoView({ behavior: "smooth" }); }
