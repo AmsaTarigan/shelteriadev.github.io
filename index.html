@@ -6,9 +6,6 @@
 <title>ShelteriaDev – Web Developer Profesional</title>
 <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════
-   TOKENS
-═══════════════════════════════════ */
 :root {
   --green-deep:   #1A5C2A;
   --green-main:   #2D8C45;
@@ -37,6 +34,10 @@
   --shadow-sm: 0 2px 8px rgba(17,23,20,.07);
   --shadow-md: 0 6px 24px rgba(17,23,20,.10);
   --shadow-lg: 0 16px 48px rgba(17,23,20,.13);
+
+  /* Spacing tokens for negative space */
+  --section-gap: 120px;
+  --section-gap-sm: 80px;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -52,27 +53,38 @@ body {
 a { text-decoration: none; color: inherit; }
 img { display: block; max-width: 100%; }
 
-/* ── Wrap ── */
 .wrap { max-width: 1160px; margin: 0 auto; padding: 0 28px; }
 
-/* ── Scroll reveal ── */
-.reveal {
+/* ── Scroll reveal – smoother, staggered ── */
+.reveal,
+.reveal-left,
+.reveal-right,
+.reveal-scale {
   opacity: 0;
-  transform: translateY(36px);
-  transition: opacity .72s cubic-bezier(.22,.68,0,1.2), transform .72s cubic-bezier(.22,.68,0,1.2);
+  transition-timing-function: cubic-bezier(.16, 1, .3, 1);
+  transition-duration: .9s;
+  transition-property: opacity, transform;
 }
-.reveal.visible { opacity: 1; transform: translateY(0); }
-.reveal-left  { opacity: 0; transform: translateX(-40px); transition: opacity .72s cubic-bezier(.22,.68,0,1.2), transform .72s cubic-bezier(.22,.68,0,1.2); }
-.reveal-right { opacity: 0; transform: translateX(40px);  transition: opacity .72s cubic-bezier(.22,.68,0,1.2), transform .72s cubic-bezier(.22,.68,0,1.2); }
-.reveal-left.visible, .reveal-right.visible { opacity: 1; transform: translateX(0); }
-.delay-1 { transition-delay: .12s; }
-.delay-2 { transition-delay: .24s; }
-.delay-3 { transition-delay: .36s; }
-.delay-4 { transition-delay: .48s; }
+.reveal       { transform: translateY(48px); }
+.reveal-left  { transform: translateX(-52px); }
+.reveal-right { transform: translateX(52px); }
+.reveal-scale { transform: scale(.94) translateY(24px); }
 
-/* ═══════════════════════════════════
-   NAVBAR
-═══════════════════════════════════ */
+.reveal.visible,
+.reveal-left.visible,
+.reveal-right.visible,
+.reveal-scale.visible {
+  opacity: 1;
+  transform: none;
+}
+
+.delay-1 { transition-delay: .1s; }
+.delay-2 { transition-delay: .22s; }
+.delay-3 { transition-delay: .36s; }
+.delay-4 { transition-delay: .52s; }
+.delay-5 { transition-delay: .68s; }
+
+/* ═══ NAVBAR ═══ */
 .navbar {
   position: fixed; top: 0; left: 0; right: 0;
   z-index: 500;
@@ -93,12 +105,15 @@ img { display: block; max-width: 100%; }
   flex-shrink: 0; margin-right: auto;
 }
 .nav-logo-icon {
-  width: 36px; height: 36px;
-  background: var(--green-main);
-  border-radius: 9px;
+  width: 40px; height: 40px;
   display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
 }
-.nav-logo-icon svg { color: #fff; }
+.nav-logo-icon img {
+  width: 40px; height: 40px;
+  object-fit: contain;
+  display: block;
+}
 .nav-logo-name {
   font-family: var(--font-head);
   font-size: 18px; font-weight: 700;
@@ -108,7 +123,7 @@ img { display: block; max-width: 100%; }
 .nav-logo-name span { color: var(--green-main); }
 .navbar.scrolled .nav-logo-name { color: var(--black); }
 .navbar:not(.scrolled) .nav-logo-name { color: var(--white); }
-.navbar:not(.scrolled) .nav-logo-icon { background: rgba(255,255,255,.20); }
+.navbar:not(.scrolled) .nav-logo-icon { background: transparent; }
 
 .nav-links {
   display: flex; align-items: center; gap: 4px;
@@ -144,9 +159,7 @@ img { display: block; max-width: 100%; }
 }
 .navbar:not(.scrolled) .btn-nav:hover { background: rgba(255,255,255,.28); }
 
-/* ═══════════════════════════════════
-   HERO
-═══════════════════════════════════ */
+/* ═══ HERO ═══ */
 .hero {
   min-height: 100vh;
   background: var(--black);
@@ -154,7 +167,6 @@ img { display: block; max-width: 100%; }
   overflow: hidden;
   display: flex; align-items: center;
 }
-/* Gradient mesh – hijau gelap */
 .hero::before {
   content: '';
   position: absolute; inset: 0;
@@ -164,7 +176,6 @@ img { display: block; max-width: 100%; }
     radial-gradient(ellipse 40% 40% at 60% 85%, rgba(58,170,87,.18) 0%, transparent 55%);
   pointer-events: none;
 }
-/* Subtle grid lines */
 .hero::after {
   content: '';
   position: absolute; inset: 0;
@@ -324,14 +335,11 @@ img { display: block; max-width: 100%; }
   0%,100% { transform: translateX(-50%) translateY(0); }
   50% { transform: translateX(-50%) translateY(6px); }
 }
-.hero-scroll-cue svg { animation: bounce-cue 2.5s ease-in-out infinite; }
 
-/* ═══════════════════════════════════
-   SECTION GENERIC
-═══════════════════════════════════ */
-.sec { padding: 96px 0; }
-.sec-sm { padding: 64px 0; }
-.sec-head { margin-bottom: 60px; }
+/* ═══ SECTION GENERIC — bigger breathing room ═══ */
+.sec { padding: var(--section-gap) 0; }
+.sec-sm { padding: var(--section-gap-sm) 0; }
+.sec-head { margin-bottom: 72px; }
 .sec-head.centered { text-align: center; }
 .sec-head.centered .sec-sub { margin: 0 auto; }
 .sec-tag {
@@ -339,7 +347,7 @@ img { display: block; max-width: 100%; }
   font-size: 11px; font-weight: 600;
   letter-spacing: .10em; text-transform: uppercase;
   color: var(--green-main);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
   padding: 4px 12px;
   background: var(--green-wash);
   border-radius: var(--rad-full);
@@ -352,7 +360,7 @@ img { display: block; max-width: 100%; }
   color: var(--black);
   letter-spacing: -1px;
   line-height: 1.15;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 .sec-sub {
   font-size: 15.5px; font-weight: 300;
@@ -361,9 +369,13 @@ img { display: block; max-width: 100%; }
   line-height: 1.72;
 }
 
-/* ═══════════════════════════════════
-   TENTANG
-═══════════════════════════════════ */
+/* Divider accent between dark/light sections */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gray-100) 20%, var(--gray-100) 80%, transparent);
+}
+
+/* ═══ TENTANG ═══ */
 .about-sec { background: var(--off-white); }
 .about-grid {
   display: grid;
@@ -371,9 +383,7 @@ img { display: block; max-width: 100%; }
   gap: 72px;
   align-items: center;
 }
-.about-img-wrap {
-  position: relative;
-}
+.about-img-wrap { position: relative; }
 .about-img-main {
   width: 100%; height: 380px;
   background: linear-gradient(145deg, var(--green-deep) 0%, var(--green-main) 60%, var(--green-light) 100%);
@@ -383,7 +393,6 @@ img { display: block; max-width: 100%; }
   position: relative;
 }
 .about-img-main svg { color: rgba(255,255,255,.15); }
-/* Decorative box */
 .about-deco {
   position: absolute;
   bottom: -20px; right: -20px;
@@ -407,8 +416,6 @@ img { display: block; max-width: 100%; }
   text-align: center;
   letter-spacing: .04em;
 }
-
-.about-content {}
 .about-values {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -420,9 +427,9 @@ img { display: block; max-width: 100%; }
   border: 1.5px solid var(--gray-100);
   border-radius: var(--rad-md);
   padding: 18px;
-  transition: border-color .2s, box-shadow .2s;
+  transition: border-color .25s, box-shadow .25s, transform .25s;
 }
-.aval-item:hover { border-color: var(--green-pale); box-shadow: var(--shadow-sm); }
+.aval-item:hover { border-color: var(--green-pale); box-shadow: var(--shadow-sm); transform: translateY(-2px); }
 .aval-icon {
   width: 36px; height: 36px;
   background: var(--green-wash);
@@ -434,9 +441,7 @@ img { display: block; max-width: 100%; }
 .aval-title { font-family: var(--font-head); font-size: 14px; font-weight: 700; color: var(--black); margin-bottom: 4px; }
 .aval-desc { font-size: 12.5px; color: var(--gray-500); line-height: 1.55; }
 
-/* ═══════════════════════════════════
-   LAYANAN
-═══════════════════════════════════ */
+/* ═══ LAYANAN ═══ */
 .layanan-sec { background: var(--white); }
 .layanan-grid {
   display: grid;
@@ -450,7 +455,7 @@ img { display: block; max-width: 100%; }
   padding: 32px 28px;
   position: relative;
   overflow: hidden;
-  transition: box-shadow .25s, transform .25s, border-color .25s;
+  transition: box-shadow .3s, transform .3s, border-color .3s;
   display: flex; flex-direction: column;
 }
 .lcard::before {
@@ -460,10 +465,10 @@ img { display: block; max-width: 100%; }
   background: linear-gradient(90deg, var(--green-main), var(--green-light));
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform .28s ease;
+  transition: transform .32s ease;
 }
 .lcard:hover::before { transform: scaleX(1); }
-.lcard:hover { box-shadow: var(--shadow-lg); transform: translateY(-5px); border-color: var(--green-pale); }
+.lcard:hover { box-shadow: var(--shadow-lg); transform: translateY(-6px); border-color: var(--green-pale); }
 .lcard-num {
   font-family: var(--font-head);
   font-size: 11px; font-weight: 700;
@@ -504,9 +509,7 @@ img { display: block; max-width: 100%; }
   border: 1px solid var(--green-pale);
 }
 
-/* ═══════════════════════════════════
-   PROSES KERJA
-═══════════════════════════════════ */
+/* ═══ PROSES KERJA ═══ */
 .proses-sec { background: var(--black); }
 .proses-sec .sec-title { color: var(--white); }
 .proses-sec .sec-sub { color: rgba(255,255,255,.45); }
@@ -517,7 +520,6 @@ img { display: block; max-width: 100%; }
   gap: 0;
   position: relative;
 }
-/* Connecting line */
 .proses-grid::before {
   content: '';
   position: absolute;
@@ -553,9 +555,7 @@ img { display: block; max-width: 100%; }
 }
 .pstep-desc { font-size: 13px; color: rgba(255,255,255,.42); line-height: 1.65; }
 
-/* ═══════════════════════════════════
-   PORTFOLIO
-═══════════════════════════════════ */
+/* ═══ PORTFOLIO ═══ */
 .portfolio-sec { background: var(--off-white); }
 .porto-grid {
   display: grid;
@@ -567,16 +567,15 @@ img { display: block; max-width: 100%; }
   border: 1.5px solid var(--gray-100);
   border-radius: var(--rad-lg);
   overflow: hidden;
-  transition: box-shadow .25s, transform .25s;
+  transition: box-shadow .3s, transform .3s;
 }
-.porto-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-5px); }
+.porto-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-6px); }
 .porto-img {
   height: 210px;
   background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-main) 100%);
   display: flex; align-items: center; justify-content: center;
   position: relative; overflow: hidden;
 }
-/* Subtle grid pattern on image placeholder */
 .porto-img::before {
   content: '';
   position: absolute; inset: 0;
@@ -613,9 +612,7 @@ img { display: block; max-width: 100%; }
   background: var(--gray-100); color: var(--gray-700);
 }
 
-/* ═══════════════════════════════════
-   KENAPA PILIH KAMI
-═══════════════════════════════════ */
+/* ═══ KENAPA PILIH KAMI ═══ */
 .why-sec { background: var(--white); }
 .why-grid {
   display: grid;
@@ -623,7 +620,6 @@ img { display: block; max-width: 100%; }
   gap: 60px;
   align-items: center;
 }
-.why-left {}
 .why-list { display: flex; flex-direction: column; gap: 20px; margin-top: 36px; }
 .why-item {
   display: flex; gap: 18px;
@@ -631,9 +627,9 @@ img { display: block; max-width: 100%; }
   border-radius: var(--rad-md);
   border: 1.5px solid var(--gray-100);
   background: var(--white);
-  transition: border-color .2s, box-shadow .2s;
+  transition: border-color .25s, box-shadow .25s, transform .25s;
 }
-.why-item:hover { border-color: var(--green-pale); box-shadow: var(--shadow-sm); }
+.why-item:hover { border-color: var(--green-pale); box-shadow: var(--shadow-sm); transform: translateX(4px); }
 .why-icon {
   width: 44px; height: 44px;
   border-radius: var(--rad-md);
@@ -645,9 +641,8 @@ img { display: block; max-width: 100%; }
 .why-title { font-family: var(--font-head); font-size: 15px; font-weight: 700; color: var(--black); margin-bottom: 5px; }
 .why-desc { font-size: 13.5px; color: var(--gray-500); line-height: 1.62; }
 
-.why-right-visual {
-  position: relative; height: 480px;
-}
+/* ═══ WHY RIGHT — stat panel (no "Angka yang Bicara" title) ═══ */
+.why-right-visual { position: relative; height: 480px; }
 .why-big-card {
   position: absolute; inset: 0;
   background: linear-gradient(145deg, var(--black) 0%, var(--green-deep) 100%);
@@ -662,15 +657,7 @@ img { display: block; max-width: 100%; }
   background-image: radial-gradient(rgba(255,255,255,.04) 1px, transparent 1px);
   background-size: 28px 28px;
 }
-.wbc-content { position: relative; z-index: 1; }
-.wbc-title {
-  font-family: var(--font-head);
-  font-size: 28px; font-weight: 700;
-  color: var(--white);
-  line-height: 1.2; letter-spacing: -.8px;
-  margin-bottom: 24px;
-}
-.wbc-title em { font-style: normal; color: var(--green-light); }
+.wbc-content { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; }
 .wbc-stats {
   display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
   flex: 1;
@@ -679,37 +666,47 @@ img { display: block; max-width: 100%; }
   background: rgba(255,255,255,.07);
   border: 1px solid rgba(255,255,255,.10);
   border-radius: var(--rad-md);
-  padding: 18px;
+  padding: 24px 18px;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  transition: background .25s, border-color .25s;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
+.wbc-stat:hover { background: rgba(255,255,255,.11); border-color: rgba(94,196,120,.25); }
 .wbc-val {
   font-family: var(--font-head);
-  font-size: 32px; font-weight: 700;
+  font-size: 36px; font-weight: 700;
   color: var(--white); line-height: 1;
-  letter-spacing: -1.5px; margin-bottom: 4px;
+  letter-spacing: -1.5px; margin-bottom: 6px;
 }
 .wbc-lbl { font-size: 11.5px; color: rgba(255,255,255,.40); text-transform: uppercase; letter-spacing: .07em; }
 
-/* ═══════════════════════════════════
-   KONTAK
-═══════════════════════════════════ */
+/* ═══ KONTAK ═══ */
 .contact-sec { background: var(--off-white); }
-.contact-grid {
+
+/* Contact info — 2x2 grid */
+.contact-info-2x2 {
   display: grid;
-  grid-template-columns: 1fr 1.1fr;
-  gap: 56px;
-  align-items: start;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  max-width: 780px;
+  margin: 0 auto;
 }
-.contact-left {}
-.contact-info-list { display: flex; flex-direction: column; gap: 16px; margin-top: 32px; }
 .ci-row {
   display: flex; gap: 16px; align-items: flex-start;
   background: var(--white);
   border: 1.5px solid var(--gray-100);
   border-radius: var(--rad-md);
-  padding: 18px 20px;
+  padding: 20px 22px;
+  transition: border-color .25s, box-shadow .25s, transform .25s;
 }
+.ci-row:hover { border-color: var(--green-pale); box-shadow: var(--shadow-sm); transform: translateY(-2px); }
 .ci-ico {
-  width: 38px; height: 38px; border-radius: var(--rad-sm);
+  width: 40px; height: 40px; border-radius: var(--rad-sm);
   background: var(--green-wash);
   border: 1px solid var(--green-pale);
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
@@ -718,107 +715,32 @@ img { display: block; max-width: 100%; }
 .ci-label { font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--green-main); margin-bottom: 4px; }
 .ci-val { font-size: 14px; color: var(--gray-700); }
 
-/* Form */
-.contact-form {
-  background: var(--white);
-  border: 1.5px solid var(--gray-100);
-  border-radius: var(--rad-xl);
-  padding: 40px 36px;
-  position: relative; overflow: hidden;
-}
-.contact-form::before {
-  content: '';
-  display: block;
-  height: 4px;
-  background: linear-gradient(90deg, var(--green-main), var(--green-light));
-  border-radius: var(--rad-xl) var(--rad-xl) 0 0;
-  margin: -40px -36px 32px;
-}
-.form-title { font-family: var(--font-head); font-size: 22px; font-weight: 700; color: var(--black); margin-bottom: 6px; letter-spacing: -.4px; }
-.form-sub { font-size: 14px; color: var(--gray-500); margin-bottom: 28px; }
-.f2col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.fgroup { margin-bottom: 16px; }
-.fgroup label {
-  display: block; font-size: 11.5px; font-weight: 600;
-  letter-spacing: .06em; text-transform: uppercase;
-  color: var(--gray-700); margin-bottom: 7px;
-}
-.fgroup input,
-.fgroup textarea,
-.fgroup select {
-  width: 100%; padding: 12px 16px;
-  border-radius: var(--rad-sm);
-  border: 1.5px solid var(--gray-100);
-  font-family: var(--font-body); font-size: 14px;
-  color: var(--black); background: var(--white);
-  outline: none;
-  transition: border-color .2s, box-shadow .2s;
-  -webkit-appearance: none;
-}
-.fgroup input:focus,
-.fgroup textarea:focus,
-.fgroup select:focus {
-  border-color: var(--green-main);
-  box-shadow: 0 0 0 3px rgba(45,140,69,.10);
-}
-.fgroup input::placeholder,
-.fgroup textarea::placeholder { color: var(--gray-300); }
-.fgroup textarea { height: 100px; resize: none; }
-.btn-submit {
-  width: 100%;
-  padding: 14px;
-  border-radius: var(--rad-sm);
-  font-family: var(--font-head);
-  font-size: 14px; font-weight: 700;
-  background: var(--green-main); color: var(--white);
-  border: none; cursor: pointer;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  transition: all .2s;
-  margin-top: 6px;
-}
-.btn-submit:hover { background: var(--green-deep); }
-.form-note { font-size: 11.5px; color: var(--gray-500); text-align: center; margin-top: 12px; }
-
-/* ═══════════════════════════════════
-   FOOTER
-═══════════════════════════════════ */
+/* ═══ FOOTER — slim ═══ */
 footer { background: var(--black); }
-.footer-top {
-  display: grid; grid-template-columns: 2fr 1fr 1fr;
-  gap: 48px; padding: 64px 0 52px;
-  border-bottom: 1px solid rgba(255,255,255,.07);
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 32px 0;
+  border-top: 1px solid rgba(255,255,255,.07);
+  flex-wrap: wrap;
 }
-.f-brand {}
-.f-logo-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.f-logo-row { display: flex; align-items: center; gap: 10px; }
 .f-logo-ico {
-  width: 34px; height: 34px;
-  background: var(--green-main); border-radius: 8px;
+  width: 30px; height: 30px;
   display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
 }
-.f-logo-ico svg { color: #fff; }
+.f-logo-ico img {
+  width: 30px; height: 30px;
+  object-fit: contain;
+  display: block;
+}
 .f-logo-name {
-  font-family: var(--font-head); font-size: 16px; font-weight: 700; color: var(--white);
+  font-family: var(--font-head); font-size: 15px; font-weight: 700; color: var(--white);
 }
 .f-logo-name span { color: var(--green-light); }
-.f-brand-desc { font-size: 13px; color: rgba(255,255,255,.38); line-height: 1.72; max-width: 240px; }
-.f-col h5 {
-  font-family: var(--font-head); font-size: 11px; font-weight: 700;
-  letter-spacing: .10em; text-transform: uppercase; color: var(--white);
-  margin-bottom: 4px; padding-bottom: 10px;
-  border-bottom: 2px solid var(--green-main);
-  display: inline-block; margin-bottom: 16px;
-}
-.f-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-.f-col a {
-  font-size: 13px; color: rgba(255,255,255,.40);
-  display: flex; align-items: center; gap: 7px;
-  transition: color .15s;
-}
-.f-col a:hover { color: var(--green-light); }
-.footer-bottom {
-  display: flex; align-items: center; justify-content: space-between; gap: 20px;
-  padding: 20px 0;
-}
 .footer-copy { font-size: 12px; color: rgba(255,255,255,.25); }
 .footer-socials { display: flex; gap: 8px; }
 .footer-socials a {
@@ -832,7 +754,7 @@ footer { background: var(--black); }
 .footer-socials a:hover { background: var(--green-main); border-color: var(--green-main); color: #fff; }
 .footer-socials a svg { width: 14px; height: 14px; }
 
-/* ── Back to top ── */
+/* Back to top */
 .back-top {
   position: fixed; bottom: 28px; right: 28px; z-index: 400;
   width: 44px; height: 44px;
@@ -847,7 +769,7 @@ footer { background: var(--black); }
 .back-top.show { opacity: 1; pointer-events: all; }
 .back-top:hover { transform: translateY(-3px); }
 
-/* ── Hamburger menu ── */
+/* Hamburger */
 .nav-hamburger {
   display: none;
   flex-direction: column; justify-content: center; align-items: center;
@@ -867,7 +789,6 @@ footer { background: var(--black); }
 .nav-hamburger.open span:nth-child(2) { opacity: 0; }
 .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-/* Mobile nav drawer */
 .nav-mobile-drawer {
   display: none;
   position: fixed; top: 68px; left: 0; right: 0;
@@ -901,16 +822,16 @@ footer { background: var(--black); }
 }
 .nav-mobile-drawer .btn-nav-mobile:hover { background: var(--green-deep); }
 
-/* ═══════════════════════════════════
-   RESPONSIVE — MOBILE
-═══════════════════════════════════ */
+/* ═══ RESPONSIVE ═══ */
 @media (max-width: 900px) {
-  /* Navbar */
+  :root {
+    --section-gap: 80px;
+    --section-gap-sm: 56px;
+  }
   .nav-links { display: none; }
   .btn-nav { display: none; }
   .nav-hamburger { display: flex; }
 
-  /* Hero */
   .hero-inner {
     grid-template-columns: 1fr;
     padding: 100px 0 60px;
@@ -919,98 +840,67 @@ footer { background: var(--black); }
   .hero-left { padding-right: 0; }
   .hero h1 { font-size: clamp(32px, 7vw, 50px); letter-spacing: -1.5px; }
   .hero-desc { font-size: 15px; max-width: 100%; }
-  .hero-ctas { gap: 12px; }
-  .btn-primary, .btn-outline-white { padding: 13px 22px; font-size: 13px; }
-
-  /* Hero right cards */
   .hero-right {
     height: auto;
     position: relative;
     display: flex; flex-direction: column; gap: 12px;
   }
   .hcard { position: static !important; animation: none !important; }
-  .hcard-stat { min-width: unset; }
-  .hcard-badge2 { min-width: unset; }
 
-  /* About */
-  .about-grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
+  .about-grid { grid-template-columns: 1fr; gap: 40px; }
   .about-img-main { height: 260px; }
   .about-deco { bottom: -16px; right: 0; }
 
-  /* Layanan */
   .layanan-grid { grid-template-columns: 1fr; gap: 16px; }
 
-  /* Proses */
-  .proses-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 32px;
-  }
+  .proses-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
   .proses-grid::before { display: none; }
 
-  /* Portfolio */
   .porto-grid { grid-template-columns: 1fr; gap: 16px; }
 
-  /* Why */
-  .why-grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
+  .why-grid { grid-template-columns: 1fr; gap: 40px; }
   .why-right-visual { height: 320px; }
 
-  /* Kontak */
-  .contact-grid {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
+  .contact-info-2x2 { grid-template-columns: 1fr; }
 
-  /* Footer */
-  .footer-top {
-    grid-template-columns: 1fr;
-    gap: 32px;
-    padding: 48px 0 36px;
-  }
-  .footer-bottom {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
-  }
+  .footer-inner { flex-direction: column; align-items: flex-start; gap: 16px; padding: 24px 0; }
 
-  /* Section padding */
-  .sec { padding: 64px 0; }
   .wrap { padding: 0 20px; }
-
-  /* Contact CTA buttons */
-  .contact-cta-btns { flex-direction: column; }
-  .contact-cta-btns a { text-align: center; justify-content: center; }
 }
 
 @media (max-width: 480px) {
+  :root { --section-gap: 64px; }
   .hero h1 { font-size: 30px; letter-spacing: -1px; }
   .hero-ctas { flex-direction: column; }
   .btn-primary, .btn-outline-white { width: 100%; justify-content: center; }
   .about-values { grid-template-columns: 1fr; }
-  .f2col { grid-template-columns: 1fr; }
   .proses-grid { grid-template-columns: 1fr; }
   .wbc-stats { grid-template-columns: 1fr 1fr; }
   .why-right-visual { height: 280px; }
-  .contact-form { padding: 28px 20px; }
-  .contact-form::before { margin: -28px -20px 24px; }
   .sec-title { font-size: 24px; }
+  .contact-info-2x2 { grid-template-columns: 1fr; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .reveal-left, .reveal-right, .reveal-scale {
+    opacity: 1; transform: none;
+    transition: none;
+  }
+  .hero-badge-dot { animation: none; }
+  .hcard-stat, .hcard-badge2 { animation: none; }
 }
 </style>
 </head>
 <body>
 
-<!-- ═══ NAVBAR ═══ -->
+<!-- NAVBAR -->
 <nav class="navbar" id="navbar">
   <div class="wrap">
     <div class="navbar-inner">
       <a href="#" class="nav-logo">
         <div class="nav-logo-icon">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          <img src="shelter.png" alt="Shelteria logo">
         </div>
         <span class="nav-logo-name">Shelteria<span>Dev</span></span>
       </a>
@@ -1031,7 +921,6 @@ footer { background: var(--black); }
   </div>
 </nav>
 
-<!-- Mobile nav drawer -->
 <div class="nav-mobile-drawer" id="navDrawer">
   <a href="#tentang" class="nav-drawer-link">Tentang</a>
   <a href="#layanan" class="nav-drawer-link">Layanan</a>
@@ -1043,7 +932,7 @@ footer { background: var(--black); }
   </button>
 </div>
 
-<!-- ═══ HERO ═══ -->
+<!-- HERO -->
 <section class="hero" id="hero">
   <div class="wrap" style="width:100%">
     <div class="hero-inner">
@@ -1083,11 +972,6 @@ footer { background: var(--black); }
             <div class="hml-item"><div class="hml-dot alt"></div><span class="hml-text">Konsultasi Digital</span></div>
           </div>
         </div>
-        <div class="hcard hcard-stat">
-          <div class="hcard-label">Project Selesai</div>
-          <div class="hcard-stat-val">20+</div>
-          <div class="hcard-stat-sub">Client puas se-Indonesia</div>
-        </div>
         <div class="hcard hcard-badge2">
           <div class="hcard-badge-row">
             <div class="hcard-badge-ico">
@@ -1108,16 +992,16 @@ footer { background: var(--black); }
   </div>
 </section>
 
-<!-- ═══ TENTANG ═══ -->
+<!-- TENTANG -->
 <section class="about-sec sec" id="tentang">
   <div class="wrap">
     <div class="about-grid">
       <div class="about-img-wrap reveal-left">
         <div class="about-img-main">
-          <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width=".8"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          <img src="shelter.png" alt="" style="width: 100%; height: 100%; object-fit: cover;">
         </div>
         <div class="about-deco">
-          <div class="about-deco-val">3+</div>
+          <div class="about-deco-val">2+</div>
           <div class="about-deco-lbl">Tahun<br>Pengalaman</div>
         </div>
       </div>
@@ -1128,22 +1012,22 @@ footer { background: var(--black); }
           Kami bukan sekadar coder — kami mitra digital yang memahami bahwa setiap website harus punya tujuan yang jelas dan hasil yang bisa diukur. Dari UMKM hingga startup, kami hadir untuk mewujudkannya.
         </p>
         <div class="about-values">
-          <div class="aval-item">
+          <div class="aval-item reveal delay-1">
             <div class="aval-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
             <div class="aval-title">Terpercaya</div>
             <div class="aval-desc">Transparan dari proses hingga hasil akhir</div>
           </div>
-          <div class="aval-item">
+          <div class="aval-item reveal delay-2">
             <div class="aval-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
             <div class="aval-title">Tepat Waktu</div>
             <div class="aval-desc">Deadline adalah komitmen, bukan saran</div>
           </div>
-          <div class="aval-item">
+          <div class="aval-item reveal delay-3">
             <div class="aval-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
             <div class="aval-title">Performa Tinggi</div>
             <div class="aval-desc">Website cepat, ringan, dan SEO-friendly</div>
           </div>
-          <div class="aval-item">
+          <div class="aval-item reveal delay-4">
             <div class="aval-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
             <div class="aval-title">Responsif</div>
             <div class="aval-desc">Komunikasi cepat dan aktif selama proyek</div>
@@ -1154,7 +1038,7 @@ footer { background: var(--black); }
   </div>
 </section>
 
-<!-- ═══ LAYANAN ═══ -->
+<!-- LAYANAN -->
 <section class="layanan-sec sec" id="layanan">
   <div class="wrap">
     <div class="sec-head centered">
@@ -1209,10 +1093,10 @@ footer { background: var(--black); }
   </div>
 </section>
 
-<!-- ═══ PROSES KERJA ═══ -->
+<!-- PROSES KERJA -->
 <section class="proses-sec sec">
   <div class="wrap">
-    <div class="sec-head centered" style="margin-bottom:72px">
+    <div class="sec-head centered" style="margin-bottom:88px">
       <div class="sec-tag reveal">Cara Kerja Kami</div>
       <h2 class="sec-title reveal delay-1">Proses yang Transparan</h2>
       <p class="sec-sub reveal delay-2" style="margin:0 auto;">Dari brief hingga launch, kami pastikan kamu tahu setiap langkahnya.</p>
@@ -1242,13 +1126,13 @@ footer { background: var(--black); }
   </div>
 </section>
 
-<!-- ═══ PORTFOLIO ═══ -->
+<!-- PORTFOLIO -->
 <section class="portfolio-sec sec" id="portfolio">
   <div class="wrap">
     <div class="sec-head centered">
       <div class="sec-tag reveal">Portfolio</div>
       <h2 class="sec-title reveal delay-1">Project yang Sudah Kami Kerjakan</h2>
-      <p class="sec-sub reveal delay-2" style="margin:0 auto;">Beberapa karya terbaik kami — screenshot dan preview langsung dari project nyata.</p>
+      <p class="sec-sub reveal delay-2" style="margin:0 auto;">Beberapa karya terbaik kami — preview langsung dari project nyata.</p>
     </div>
     <div class="porto-grid">
       <div class="porto-card reveal delay-1">
@@ -1303,7 +1187,7 @@ footer { background: var(--black); }
   </div>
 </section>
 
-<!-- ═══ KENAPA PILIH KAMI ═══ -->
+<!-- KENAPA PILIH KAMI -->
 <section class="why-sec sec">
   <div class="wrap">
     <div class="why-grid">
@@ -1337,11 +1221,10 @@ footer { background: var(--black); }
       <div class="why-right-visual reveal-right">
         <div class="why-big-card">
           <div class="wbc-content">
-            <div class="wbc-title">Angka yang<br><em>Bicara Sendiri</em></div>
             <div class="wbc-stats">
-              <div class="wbc-stat"><div class="wbc-val">20+</div><div class="wbc-lbl">Project Selesai</div></div>
-              <div class="wbc-stat"><div class="wbc-val">98%</div><div class="wbc-lbl">Client Puas</div></div>
-              <div class="wbc-stat"><div class="wbc-val">3+</div><div class="wbc-lbl">Tahun Aktif</div></div>
+              <div class="wbc-stat"><div class="wbc-val">10+</div><div class="wbc-lbl">Project Selesai</div></div>
+              <div class="wbc-stat"><div class="wbc-val">95%</div><div class="wbc-lbl">Client Puas</div></div>
+              <div class="wbc-stat"><div class="wbc-val">2+</div><div class="wbc-lbl">Tahun Aktif</div></div>
               <div class="wbc-stat"><div class="wbc-val">&lt;24h</div><div class="wbc-lbl">Response Time</div></div>
             </div>
           </div>
@@ -1351,38 +1234,38 @@ footer { background: var(--black); }
   </div>
 </section>
 
-<!-- ═══ KONTAK ═══ -->
+<!-- KONTAK -->
 <section class="contact-sec sec" id="kontak">
   <div class="wrap">
-    <div class="sec-head centered" style="margin-bottom:48px">
+    <div class="sec-head centered" style="margin-bottom:56px">
       <div class="sec-tag reveal">Hubungi Kami</div>
       <h2 class="sec-title reveal delay-1">Siap Mulai Project Kamu?</h2>
-      <p class="sec-sub reveal delay-2" style="margin:0 auto;">Konsultasi pertama gratis — ceritakan kebutuhan kamu dan kami akan siapkan solusinya dalam waktu kurang dari 24 jam.</p>
+      <p class="sec-sub reveal delay-2" style="margin:0 auto;">Konsultasi pertama gratis — ceritakan kebutuhan kamu dan kami siapkan solusinya dalam kurang dari 24 jam.</p>
     </div>
 
     <!-- CTA Buttons -->
-    <div class="reveal" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:52px;">
+    <div class="reveal" style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-bottom:56px;">
       <a href="https://wa.me/6282283924093?text=Halo%20ShelteriaDev%2C%20saya%20mau%20konsultasi%20project" target="_blank"
         style="display:inline-flex;align-items:center;gap:10px;padding:15px 32px;border-radius:var(--rad-sm);font-family:var(--font-head);font-size:14px;font-weight:700;background:var(--green-main);color:var(--white);text-decoration:none;box-shadow:0 4px 20px rgba(45,140,69,.35);transition:all .2s;">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
         Chat via WhatsApp
       </a>
-      <a href="mailto:hello@shelteriadev.com"
+      <a href="mailto:shelteriatech@gmail.com"
         style="display:inline-flex;align-items:center;gap:10px;padding:14px 28px;border-radius:var(--rad-sm);font-family:var(--font-head);font-size:14px;font-weight:600;background:transparent;color:var(--gray-700);border:1.5px solid var(--gray-100);text-decoration:none;transition:all .2s;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
         Kirim Email
       </a>
     </div>
 
-    <!-- Contact Info Cards -->
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;max-width:860px;margin:0 auto;">
+    <!-- Contact Info — 2x2 grid -->
+    <div class="contact-info-2x2">
       <div class="ci-row reveal delay-1">
         <div class="ci-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-        <div><div class="ci-label">Email</div><div class="ci-val">hello@shelteriadev.com</div></div>
+        <div><div class="ci-label">Email</div><div class="ci-val">shelteriatech@gmail.com</div></div>
       </div>
       <div class="ci-row reveal delay-2">
         <div class="ci-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg></div>
-        <div><div class="ci-label">WhatsApp</div><div class="ci-val">+62 812-XXXX-XXXX</div></div>
+        <div><div class="ci-label">WhatsApp</div><div class="ci-val">+62 822-8392-4093</div></div>
       </div>
       <div class="ci-row reveal delay-3">
         <div class="ci-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg></div>
@@ -1396,55 +1279,27 @@ footer { background: var(--black); }
   </div>
 </section>
 
-<!-- ═══ FOOTER ═══ -->
+<!-- FOOTER — slim -->
 <footer>
   <div class="wrap">
-    <div class="footer-top">
-      <div class="f-brand">
-        <div class="f-logo-row">
-          <div class="f-logo-ico"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
-          <span class="f-logo-name">Shelteria<span>Dev</span></span>
+    <div class="footer-inner">
+      <div class="f-logo-row">
+        <div class="f-logo-ico">
+          <img src="shelter.png" alt="Shelteria logo">
         </div>
-        <p class="f-brand-desc">Developer profesional spesialis website, e-commerce, dan aplikasi web untuk UMKM dan startup Indonesia.</p>
+        <span class="f-logo-name">Shelteria<span>Dev</span></span>
       </div>
-      <div class="f-col">
-        <h5>Layanan</h5>
-        <ul>
-          <li><a href="#layanan">Website & Company Profile</a></li>
-          <li><a href="#layanan">E-Commerce</a></li>
-          <li><a href="#layanan">Landing Page</a></li>
-          <li><a href="#layanan">Dashboard & Admin</a></li>
-          <li><a href="#layanan">Maintenance</a></li>
-        </ul>
-      </div>
-      <div class="f-col">
-        <h5>Navigasi</h5>
-        <ul>
-          <li><a href="#hero">Beranda</a></li>
-          <li><a href="#tentang">Tentang</a></li>
-          <li><a href="#portfolio">Portfolio</a></li>
-          <li><a href="#kontak">Kontak</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
       <span class="footer-copy">© 2025 ShelteriaDev. All rights reserved.</span>
       <div class="footer-socials">
-        <a href="#" title="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg></a>
-        <a href="#" title="GitHub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg></a>
-        <a href="#" title="WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg></a>
+        <a href="https://www.instagram.com/shelteriadev/?utm_source=ig_web_button_share_sheet" title="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".5" fill="currentColor"/></svg></a>
+        <a href="https://github.com/AmsaTarigan" title="GitHub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg></a>
+        <a href="https://wa.me/6282283924093" title="WhatsApp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg></a>
       </div>
     </div>
   </div>
 </footer>
 
-<!-- Back to top -->
-<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
-</button>
-
 <script>
-// Navbar scroll behavior
 const navbar = document.getElementById("navbar");
 const backTop = document.getElementById("backTop");
 window.addEventListener("scroll", () => {
@@ -1453,15 +1308,12 @@ window.addEventListener("scroll", () => {
   backTop.classList.toggle("show", y > 400);
 });
 
-// Hamburger menu
 const hamburger = document.getElementById("navHamburger");
 const drawer = document.getElementById("navDrawer");
 hamburger.addEventListener("click", () => {
   hamburger.classList.toggle("open");
   drawer.classList.toggle("open");
 });
-
-// Close drawer when clicking links
 document.querySelectorAll(".nav-drawer-link").forEach(a => {
   a.addEventListener("click", () => {
     hamburger.classList.remove("open");
@@ -1469,14 +1321,19 @@ document.querySelectorAll(".nav-drawer-link").forEach(a => {
   });
 });
 
-// Scroll reveal
-const revealEls = document.querySelectorAll(".reveal, .reveal-left, .reveal-right");
+// Scroll reveal with IntersectionObserver
+const revealEls = document.querySelectorAll(".reveal, .reveal-left, .reveal-right, .reveal-scale");
 const io = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); io.unobserve(e.target); } });
-}, { threshold: 0.10, rootMargin: "0px 0px -30px 0px" });
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add("visible");
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
 revealEls.forEach(el => io.observe(el));
 
-// Smooth scroll for nav links
+// Smooth scroll
 document.querySelectorAll("a[href^='#']").forEach(a => {
   a.addEventListener("click", e => {
     const t = document.querySelector(a.getAttribute("href"));
